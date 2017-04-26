@@ -408,6 +408,9 @@ public:
     // get the last available version of the app
     void getlastversion(const char *appKey);
 
+    // get a local ssl certificate for communications with the webclient
+    void getlocalsslcertificate();
+
     // maximum outbound throughput (per target server)
     int putmbpscap;
 
@@ -587,6 +590,9 @@ private:
     // auth URI component for API requests
     string auth;
 
+    // lang URI component for API requests
+    string lang;
+
     // public handle being used
     handle publichandle;
 
@@ -599,7 +605,9 @@ private:
     // next local user record identifier to use
     int userid;
 
+    // backoff for file attributes
     BackoffTimer btpfa;
+    bool faretrying;
 
     // next internal upload handle
     handle nextuh;
@@ -1126,6 +1134,7 @@ public:
 
     // queue public key request for user
     void queuepubkeyreq(User*, PubKeyAction*);
+    void queuepubkeyreq(const char*, PubKeyAction*);
 
     // rewrite foreign keys of the node (tree)
     void rewriteforeignkeys(Node* n);
@@ -1137,6 +1146,8 @@ public:
     // set authentication context, either a session ID or a exported folder node handle
     void setsid(const byte*, unsigned);
     void setrootnode(handle);
+
+    bool setlang(string *code);
 
     // returns the handle of the root node if the account is logged into a public folder, otherwise UNDEF.
     handle getrootpublicfolder();
